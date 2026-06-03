@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scribal Institute — Quantitative Finance · Economics · Education</title>
+
+  <!-- ── Favicon placeholders (replace with real files from designer) ── -->
+  <!-- 16×16 px ICO/PNG  → /assets/favicon-16x16.png   -->
+  <!-- 32×32 px ICO/PNG  → /assets/favicon-32x32.png   -->
+  <!-- 180×180 px PNG    → /assets/apple-touch-icon.png -->
+  <!-- 192×192 px PNG    → /assets/android-chrome-192.png -->
+  <!-- 512×512 px PNG    → /assets/android-chrome-512.png -->
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────────────── */
+    :root {
+      --navy:         #0d1b2a;
+      --navy-mid:     #162437;
+      --navy-soft:    #1e3250;
+      --navy-light:   #243b55;
+      --gold:         #c9a84c;
+      --gold-bright:  #e0bf6a;
+      --gold-pale:    #edd89c;
+      --ivory:        #f5f0e8;
+      --ivory-warm:   #ede6d6;
+      --ink:          #1a1611;
+      --ink-mid:      #2e2418;
+      --ink-soft:     #4a3c2c;
+      --rule:         rgba(201,168,76,0.4);
+
+      --serif-display: 'IM Fell English', Georgia, serif;
+      --serif-body:    'Cormorant Garamond', Georgia, serif;
+      --serif-ui:      'Libre Baskerville', Georgia, serif;
+
+      --text-xs:   0.8rem;
+      --text-sm:   0.9rem;
+      --text-base: 1.1rem;
+      --text-md:   1.2rem;
+      --text-lg:   1.35rem;
+      --text-xl:   1.6rem;
+      --text-2xl:  2rem;
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--serif-body);
+      font-size: var(--text-md);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE TEXTURE ─────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.5;
+    }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+    h1, h2, h3, h4 { font-family: var(--serif-display); font-weight: 400; line-height: 1.2; color: var(--navy); }
+    p { margin-bottom: 1.2em; }
+    a { color: var(--gold-bright); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--gold-pale); }
+    .label {
+      font-family: var(--serif-ui); font-size: var(--text-xs);
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold-bright); font-weight: 700;
+    }
+    .rule-gold { display: block; width: 52px; height: 2px; background: var(--gold); margin: 1rem 0 1.4rem; }
+
+    /* ─── LOGO PLACEHOLDER STYLES ───────────────────────────────── */
+    /*
+     * LOGO PLACEHOLDER — replace .logo-placeholder img src with real file.
+     * Nav logo:          48 × 48 px  (displayed), supply 96×96 @2× PNG
+     * Footer logo:       40 × 40 px  (displayed), supply 80×80 @2× PNG
+     * OG / Social share: 1200 × 630 px  horizontal lockup
+     * Favicon:           see <head> comments above
+     */
+    .logo-placeholder {
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px dashed rgba(201,168,76,0.6);
+      border-radius: 4px;
+      background: rgba(201,168,76,0.07);
+      color: rgba(201,168,76,0.7);
+      font-family: var(--serif-ui);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1.3;
+    }
+    /* Nav logo box: 48×48 */
+    .logo-nav { width: 48px; height: 48px; }
+    /* Footer logo box: 40×40 */
+    .logo-footer { width: 40px; height: 40px; }
+
+    /* Once the real logo file is ready, swap to:
+       <img src="assets/logo-mark.png" alt="Scribal Institute" width="48" height="48" class="logo-nav">
+    */
+
+    /* ─── NAVIGATION ─────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      background: rgba(10,21,34,0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201,168,76,0.5);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 72px; gap: 1.5rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 1rem; }
+    .nav-brand { display: flex; flex-direction: column; gap: 2px; }
+    .nav-brand .wordmark {
+      font-family: var(--serif-display); color: var(--ivory);
+      font-size: 1.35rem; letter-spacing: 0.04em; line-height: 1;
+    }
+    .nav-brand .sub {
+      font-family: var(--serif-ui); font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold-bright); font-weight: 400;
+    }
+    .nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      font-family: var(--serif-ui); font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ivory); transition: color 0.2s; font-weight: 400;
+    }
+    .nav-links a:hover { color: var(--gold-bright); }
+    .nav-cta {
+      border: 1.5px solid var(--gold) !important;
+      color: var(--gold-bright) !important;
+      padding: 0.5rem 1.3rem !important;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--navy) !important; }
+
+    /* Hamburger */
+    .nav-hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; padding: 4px; }
+    .nav-hamburger span { display: block; width: 26px; height: 2px; background: var(--ivory); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .nav-hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Mobile overlay nav */
+    .mobile-nav {
+      display: none; position: fixed; inset: 72px 0 0;
+      background: rgba(10,21,34,0.99);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2.5rem; z-index: 850;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--serif-ui); font-size: 1.2rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ivory); padding: 0.6rem; transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--gold-bright); }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; background: var(--navy);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    #hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 65% 55% at 72% 50%, rgba(201,168,76,0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-ornament {
+      position: absolute; right: -2rem; bottom: -4rem;
+      font-family: var(--serif-display); font-size: 42vw;
+      color: rgba(201,168,76,0.03); line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 2; max-width: 1240px; margin: 0 auto;
+      padding: 9rem 3rem 5rem;
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 5rem; align-items: center;
+    }
+    .hero-text .eyebrow {
+      font-family: var(--serif-ui); font-size: var(--text-xs);
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold-bright); margin-bottom: 1.5rem; font-weight: 700;
+    }
+    .hero-text h1 {
+      font-family: var(--serif-display);
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+      color: var(--ivory); line-height: 1.1; margin-bottom: 0.5rem;
+    }
+    .hero-text h1 em { font-style: italic; color: var(--gold-pale); }
+    .hero-desc {
+      font-family: var(--serif-body); font-size: var(--text-lg);
+      color: var(--ivory-warm); margin: 2rem 0 2.8rem;
+      max-width: 480px; line-height: 1.8;
+    }
+    /* Hero discipline tags */
+    .hero-disciplines {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-bottom: 2.2rem;
+    }
+    .discipline-tag {
+      font-family: var(--serif-ui); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      border: 1px solid rgba(201,168,76,0.45);
+      color: var(--gold-pale); padding: 0.35rem 0.9rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: var(--serif-ui); font-size: var(--text-sm);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--gold); color: var(--navy);
+      padding: 0.9rem 2.2rem; font-weight: 700;
+      border: none; cursor: pointer; display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold-pale); color: var(--navy); transform: translateY(-2px); }
+    .btn-ghost {
+      font-family: var(--serif-ui); font-size: var(--text-sm);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1.5px solid rgba(245,240,232,0.55); color: var(--ivory);
+      padding: 0.9rem 2.2rem;
+      transition: border-color 0.2s, color 0.2s; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+
+    /* Hero stat cards */
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .stat-card {
+      background: rgba(22,36,55,0.75); border: 1px solid rgba(201,168,76,0.25);
+      padding: 2rem 1.8rem;
+    }
+    .stat-card:first-child { grid-column: 1 / -1; background: rgba(22,36,55,0.9); border-color: rgba(201,168,76,0.45); }
+    .stat-num { font-family: var(--serif-display); font-size: 3.8rem; color: var(--gold-bright); line-height: 1; margin-bottom: 0.4rem; }
+    .stat-label { font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ivory); font-weight: 700; }
+    .stat-desc { font-family: var(--serif-body); font-size: var(--text-base); color: var(--ivory-warm); margin-top: 0.5rem; font-style: italic; }
+
+    /* ─── SECTION SHELLS ────────────────────────────────────────── */
+    section { position: relative; }
+    .section-inner { max-width: 1240px; margin: 0 auto; padding: 6rem 3rem; }
+    .section-header { margin-bottom: 4rem; }
+    .section-header h2 { font-size: clamp(2rem, 3.2vw, 3rem); color: var(--navy); margin-top: 0.6rem; line-height: 1.15; }
+    #services .section-header h2,
+    #contact  .section-header h2 { color: var(--ivory); }
+
+    /* ─── ABOUT ─────────────────────────────────────────────────── */
+    #about { background: var(--ivory-warm); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.45fr; gap: 5rem; align-items: start; }
+    .about-sidebar { position: sticky; top: 90px; }
+    .about-sidebar .pull-quote {
+      font-family: var(--serif-display); font-size: var(--text-xl);
+      font-style: italic; color: var(--navy); line-height: 1.45;
+      border-left: 3px solid var(--gold); padding-left: 1.5rem; margin: 2rem 0;
+    }
+    .about-sidebar .location-note {
+      font-size: var(--text-sm); color: var(--ink-soft);
+      font-family: var(--serif-ui); letter-spacing: 0.03em; line-height: 1.6;
+    }
+    .about-body p { color: var(--ink-mid); font-size: var(--text-md); }
+
+    /* Mission / Vision boxes */
+    .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2.5rem; background: rgba(201,168,76,0.25); }
+    .mv-box { background: var(--ivory); padding: 1.8rem; }
+    .mv-box h4 {
+      font-family: var(--serif-ui); font-size: var(--text-xs);
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.7rem; font-weight: 700;
+    }
+    .mv-box p { font-size: var(--text-base); color: var(--ink-mid); margin: 0; line-height: 1.65; }
+
+    /* Pillars 2×2 */
+    .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 2.5rem; background: rgba(201,168,76,0.3); }
+    .pillar { background: var(--ivory); padding: 1.8rem; }
+    .pillar h4 { font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy); margin-bottom: 0.7rem; font-weight: 700; }
+    .pillar p { font-size: var(--text-base); color: var(--ink-mid); margin: 0; line-height: 1.65; }
+
+    /* ─── SERVICES — 4 DIVISIONS ────────────────────────────────── */
+    #services { background: var(--navy); }
+    #services .label { color: var(--gold-bright); }
+    .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
+    .service-card {
+      background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.2);
+      padding: 2.8rem 2.4rem; transition: border-color 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover { border-color: rgba(201,168,76,0.5); background: var(--navy-soft); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num { font-family: var(--serif-display); font-size: 3.2rem; color: rgba(201,168,76,0.28); line-height: 1; margin-bottom: 1rem; }
+    .service-card h3 { font-family: var(--serif-display); font-size: var(--text-xl); color: var(--ivory); margin-bottom: 0.4rem; }
+    .service-card .service-subtitle {
+      font-family: var(--serif-ui); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.1rem; font-weight: 700;
+    }
+    .service-card p { font-size: var(--text-base); color: rgba(245,240,232,0.9); line-height: 1.75; }
+    .service-list { list-style: none; margin-top: 1.5rem; }
+    .service-list li {
+      font-family: var(--serif-ui); font-size: var(--text-sm);
+      letter-spacing: 0.06em; color: var(--gold-pale);
+      padding: 0.55rem 0; border-bottom: 1px solid rgba(201,168,76,0.18);
+      display: flex; align-items: flex-start; gap: 0.7rem; line-height: 1.5;
+    }
+    .service-list li::before { content: '—'; color: var(--gold-bright); font-family: var(--serif-display); flex-shrink: 0; }
+
+    /* Tools badge strip */
+    .tools-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
+    .tool-badge {
+      font-family: var(--serif-ui); font-size: 0.65rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold-pale); padding: 0.25rem 0.7rem;
+    }
+
+    /* ─── METHODS & TOOLS ───────────────────────────────────────── */
+    #methods { background: var(--ivory); }
+    .methods-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(201,168,76,0.2); }
+    .method-block { background: var(--ivory); padding: 2.5rem 2.2rem; }
+    .method-block h3 { font-family: var(--serif-display); font-size: var(--text-xl); color: var(--navy); margin-bottom: 0.8rem; }
+    .method-block p { font-size: var(--text-base); color: var(--ink-mid); line-height: 1.75; }
+    .method-block .method-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+    .method-tool {
+      font-family: var(--serif-ui); font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--navy); color: var(--gold-pale);
+      border: 1px solid rgba(201,168,76,0.3); padding: 0.3rem 0.8rem;
+    }
+
+    /* Scale strip */
+    .scale-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 3rem; background: rgba(201,168,76,0.2); }
+    .scale-item { background: var(--navy); padding: 2rem; text-align: center; }
+    .scale-icon { font-family: var(--serif-display); font-size: 2.4rem; color: var(--gold-bright); margin-bottom: 0.5rem; line-height: 1; }
+    .scale-item h4 { font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ivory); margin-bottom: 0.5rem; font-weight: 700; }
+    .scale-item p { font-size: var(--text-sm); color: rgba(245,240,232,0.8); margin: 0; line-height: 1.6; }
+
+    /* ─── APPROACH ───────────────────────────────────────────────── */
+    #approach { background: var(--ivory-warm); }
+    .approach-list { counter-reset: principle; }
+    .principle {
+      display: grid; grid-template-columns: 90px 1fr; gap: 2.5rem;
+      align-items: start; padding: 3rem 0;
+      border-bottom: 1px solid rgba(201,168,76,0.45);
+      counter-increment: principle;
+    }
+    .principle:first-child { border-top: 1px solid rgba(201,168,76,0.45); }
+    .principle-num { font-family: var(--serif-display); font-size: 2.8rem; font-style: italic; color: rgba(201,168,76,0.55); text-align: right; padding-top: 0.1rem; line-height: 1; }
+    .principle-content h3 { font-family: var(--serif-display); font-size: var(--text-xl); color: var(--navy); margin-bottom: 0.7rem; }
+    .principle-content p { font-size: var(--text-md); color: var(--ink-mid); margin: 0; line-height: 1.75; }
+
+    /* ─── WHY SCRIBAL ────────────────────────────────────────────── */
+    #why { background: var(--navy); }
+    #why .section-header h2 { color: var(--ivory); }
+    #why .label { color: var(--gold-bright); }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+    .why-card {
+      background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.18);
+      padding: 2.2rem; transition: border-color 0.3s;
+    }
+    .why-card:hover { border-color: rgba(201,168,76,0.45); }
+    .why-icon { font-family: var(--serif-display); font-size: 1.8rem; color: var(--gold); margin-bottom: 0.8rem; line-height: 1; }
+    .why-card h4 { font-family: var(--serif-ui); font-size: var(--text-sm); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ivory); margin-bottom: 0.6rem; font-weight: 700; }
+    .why-card p { font-size: var(--text-base); color: rgba(245,240,232,0.85); line-height: 1.7; margin: 0; }
+
+    /* ─── LEADERSHIP ─────────────────────────────────────────────── */
+    #leadership { background: var(--ivory-warm); }
+    .leader-card {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 5rem;
+      align-items: start; background: var(--navy); padding: 4rem;
+    }
+    .leader-left { text-align: center; }
+    .leader-avatar {
+      width: 170px; height: 170px; border-radius: 50%;
+      border: 2.5px solid var(--gold); background: var(--navy-soft);
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 1.6rem; overflow: hidden;
+      position: relative;
+    }
+    /* ── Logo placeholder inside avatar area ─────────────────────
+       Supply a square headshot: 340×340 px minimum (2× for retina).
+       Replace the initials span with: <img src="assets/opelo-photo.jpg" alt="Opelo Mbakile" width="170" height="170" style="object-fit:cover;width:100%;height:100%;">
+    */
+    .leader-avatar .initials { font-family: var(--serif-display); font-size: 3.2rem; color: var(--gold-bright); }
+    .leader-name { font-family: var(--serif-display); font-size: var(--text-2xl); color: var(--ivory); margin-bottom: 0.4rem; }
+    .leader-title { font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright); font-weight: 700; }
+    .credentials { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .credential {
+      font-family: var(--serif-ui); font-size: var(--text-sm); letter-spacing: 0.06em;
+      color: var(--gold-pale); padding: 0.55rem 0.9rem;
+      border-left: 3px solid var(--gold); background: rgba(201,168,76,0.1); text-align: left;
+    }
+    .leader-bio p { color: var(--ivory-warm); margin-bottom: 1.3rem; font-size: var(--text-md); line-height: 1.8; }
+
+    /* ─── CONTACT ────────────────────────────────────────────────── */
+    #contact { background: var(--navy); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 5rem; align-items: start; }
+    .contact-info > p { font-size: var(--text-md); color: var(--ivory-warm); margin-bottom: 2rem; line-height: 1.8; }
+    .contact-item { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.8rem; }
+    .contact-icon { font-size: 1.3rem; color: var(--gold-bright); width: 30px; flex-shrink: 0; margin-top: 2px; }
+    .contact-detail { font-size: var(--text-base); color: var(--ivory-warm); }
+    .contact-detail strong { display: block; font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright); margin-bottom: 0.3rem; font-weight: 700; }
+    .contact-detail a { color: var(--gold-pale); }
+    .contact-detail a:hover { color: var(--gold-bright); }
+    .contact-form { display: flex; flex-direction: column; gap: 1.3rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label { font-family: var(--serif-ui); font-size: var(--text-xs); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright); font-weight: 700; }
+    .form-group input, .form-group select, .form-group textarea {
+      background: rgba(30,52,82,0.8); border: 1.5px solid rgba(201,168,76,0.35);
+      color: var(--ivory); padding: 0.9rem 1.1rem;
+      font-family: var(--serif-body); font-size: var(--text-md);
+      outline: none; transition: border-color 0.2s, background 0.2s; -webkit-appearance: none;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(245,240,232,0.45); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold-bright); background: rgba(30,52,82,0.95); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-group select option { background: var(--navy-mid); color: var(--ivory); }
+    #form-msg { font-family: var(--serif-ui); font-size: var(--text-sm); letter-spacing: 0.1em; color: var(--gold-bright); margin-top: 0.5rem; display: none; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer { background: #060e18; border-top: 1px solid rgba(201,168,76,0.4); padding: 3rem; }
+    .footer-inner { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; }
+    .footer-left { display: flex; align-items: center; gap: 1rem; }
+    .footer-brand .wordmark { font-family: var(--serif-display); font-size: 1.1rem; color: var(--ivory); letter-spacing: 0.05em; }
+    .footer-brand .sub { font-family: var(--serif-ui); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright); }
+    .footer-copy { font-family: var(--serif-ui); font-size: 0.72rem; letter-spacing: 0.1em; color: rgba(245,240,232,0.55); text-align: center; line-height: 1.7; }
+    .footer-reg { font-size: 0.62rem; opacity: 0.7; display: block; margin-top: 0.3rem; }
+    .footer-links { display: flex; justify-content: flex-end; gap: 2rem; }
+    .footer-links a { font-family: var(--serif-ui); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.6); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold-bright); }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────────────── */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE — TABLET ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-inner { gap: 3.5rem; padding: 8rem 2.5rem 5rem; }
+      .about-grid { gap: 3.5rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .methods-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .leader-card { gap: 3.5rem; padding: 3rem; }
+      .contact-grid { gap: 3.5rem; }
+    }
+
+    /* ─── RESPONSIVE — MOBILE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root {
+        --text-xs: 0.82rem; --text-sm: 0.95rem; --text-base: 1.05rem;
+        --text-md: 1.15rem; --text-lg: 1.25rem; --text-xl: 1.45rem; --text-2xl: 1.75rem;
+      }
+      nav { padding: 0 1.4rem; height: 66px; }
+      .nav-brand .wordmark { font-size: 1.15rem; }
+      .nav-brand .sub { display: none; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .mobile-nav { top: 66px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; padding: 6.5rem 1.4rem 3.5rem; }
+      .hero-text h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+      .hero-desc { max-width: 100%; }
+      .hero-ornament { display: none; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .section-inner { padding: 4rem 1.4rem; }
+      .section-header { margin-bottom: 2.8rem; }
+      .section-header h2 { font-size: clamp(1.7rem, 6vw, 2.4rem); }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-sidebar { position: static; }
+      .about-sidebar .pull-quote { font-size: var(--text-lg); }
+      .mv-grid { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { padding: 2.2rem 1.8rem; }
+      .methods-grid { grid-template-columns: 1fr; }
+      .scale-strip { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .principle { grid-template-columns: 60px 1fr; gap: 1.5rem; padding: 2.2rem 0; }
+      .principle-num { font-size: 2.2rem; }
+      .leader-card { grid-template-columns: 1fr; gap: 2.5rem; padding: 2.5rem 1.8rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; }
+      .footer-left { justify-content: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-stats { grid-template-columns: 1fr; }
+      .hero-stats .stat-card:first-child { grid-column: auto; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { text-align: center; }
+      .hero-disciplines { justify-content: center; }
+      .leader-avatar { width: 140px; height: 140px; }
+      .leader-avatar .initials { font-size: 2.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       NAVIGATION
+  ══════════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-left">
+      <!--
+        NAV LOGO PLACEHOLDER
+        Replace the div below with:
+        <img src="assets/logo-mark-white.png" alt="Scribal Institute" width="48" height="48" class="logo-nav">
+        Artwork spec: 96 × 96 px PNG @ 2× (displayed at 48×48 px), white/gold on transparent background
+      -->
+      <div class="logo-placeholder logo-nav">LOGO<br/>48×48</div>
+      <div class="nav-brand">
+        <span class="wordmark">Scribal Institute</span>
+        <span class="sub">Quantitative Finance · Economics · Education</span>
+      </div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Divisions</a></li>
+      <li><a href="#methods">Methods</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+      <li><a href="#contact" class="nav-cta">Engage</a></li>
+    </ul>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#about"      onclick="toggleMenu()">About</a>
+    <a href="#services"   onclick="toggleMenu()">Divisions</a>
+    <a href="#methods"    onclick="toggleMenu()">Methods</a>
+    <a href="#leadership" onclick="toggleMenu()">Leadership</a>
+    <a href="#contact"    onclick="toggleMenu()">Engage</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-ornament">∑</div>
+    <div class="hero-inner">
+
+      <div class="hero-text fade-up">
+        <p class="eyebrow">Gaborone · Botswana · Est. 2026</p>
+        <h1>Frameworks, Advisory &amp;<br/><em>Analysis</em> Built on<br/>Mathematical Rigour</h1>
+        <div class="hero-disciplines">
+          <span class="discipline-tag">Quantitative Finance</span>
+          <span class="discipline-tag">Economics</span>
+          <span class="discipline-tag">Education</span>
+        </div>
+        <p class="hero-desc">
+          Scribal Institute delivers investment advisory, quantitative economic analysis,
+          education, and fintech products — grounded in evidence, transparent in method,
+          accountable to outcomes.
+        </p>
+        <div class="hero-actions">
+          <a href="#services" class="btn-primary">Our Divisions</a>
+          <a href="#contact"  class="btn-ghost">Engage With Us</a>
+        </div>
+      </div>
+
+      <div class="hero-stats fade-up" style="transition-delay:0.2s">
+        <div class="stat-card">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Integrated Divisions</div>
+          <div class="stat-desc">Advisory · Economics · Education · Fintech — one feedback loop</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">∅</div>
+          <div class="stat-label">Evidence-Led</div>
+          <div class="stat-desc">Data and models over narrative</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">σ</div>
+          <div class="stat-label">Risk &amp; Uncertainty First</div>
+          <div class="stat-desc">Measured before conclusions are drawn</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       ABOUT
+  ══════════════════════════════════════════════════ -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+
+        <div class="about-sidebar fade-up">
+          <span class="label">Who We Are</span>
+          <span class="rule-gold"></span>
+          <h2 style="font-size:var(--text-2xl); color:var(--navy); margin-bottom:1rem; line-height:1.2">
+            African in context.<br/>Global in standard.
+          </h2>
+          <blockquote class="pull-quote">
+            "Decisions improve when they are grounded in explicit method rather than intuition,
+            and when uncertainty is measured before conclusions are drawn."
+          </blockquote>
+          <p class="location-note">
+            Headquartered in Gaborone, Botswana. Operating to the highest international standards
+            in quantitative finance and economic modelling.
+          </p>
+        </div>
+
+        <div class="about-body fade-up" style="transition-delay:0.15s">
+          <p>
+            Scribal Institute (Pty) Ltd is a quantitative advisory firm headquartered in Gaborone,
+            Botswana. We build investment and economic frameworks on mathematical and statistical
+            rigour, then deliver them in a live advisory and analytical context — translating
+            research into decisions that clients can act on, monitor, and hold us accountable to.
+          </p>
+          <p>
+            The firm is structured around four integrated divisions: Financial Services, Economics
+            Analysis, Financial Education, and Fintech Product Development. Each division reinforces
+            the others — research sharpened in advisory and analytical work feeds the classroom, and
+            methods proven across all three become the basis for the products we build.
+          </p>
+          <p>
+            A rare combined competence: quantitative finance and applied economic modelling under
+            one roof. Our mandate is to bring institutional-grade quantitative method to a market
+            that has long been underserved by it — without diluting the rigour that defines it.
+          </p>
+          <div class="mv-grid">
+            <div class="mv-box">
+              <h4>Mission</h4>
+              <p>To make rigorous, evidence-led quantitative analysis accessible to investors,
+              institutions, governments, and learners — and to set the standard for quantitative
+              finance and economic practice in Botswana and the wider region.</p>
+            </div>
+            <div class="mv-box">
+              <h4>Vision</h4>
+              <p>A regional financial and economic ecosystem in which decisions are
+              framework-driven and evidence-led, supported by a generation of quantitatively
+              fluent professionals trained to the highest international standards.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       DIVISIONS (4 Cards — 2×2 grid)
+  ══════════════════════════════════════════════════ -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">What We Do</span>
+        <span class="rule-gold"></span>
+        <h2>Four Divisions.<br/>One Method.</h2>
+      </div>
+      <div class="services-grid">
+
+        <!-- 01 Financial Services -->
+        <div class="service-card fade-up">
+          <div class="service-num">01</div>
+          <h3>Financial Services</h3>
+          <p class="service-subtitle">Live Advisory</p>
+          <p>Frameworks and strategy delivered in a live client context — investment frameworks, decision-ready market analysis, and risk-adjusted portfolio strategies monitored on an ongoing basis.</p>
+          <ul class="service-list">
+            <li>Rules-based asset allocation &amp; portfolio construction frameworks</li>
+            <li>Client-facing market analysis — written to inform action</li>
+            <li>Risk-adjusted strategies, stress-tested and monitored live</li>
+          </ul>
+        </div>
+
+        <!-- 02 Economics Analysis -->
+        <div class="service-card fade-up" style="transition-delay:0.1s">
+          <div class="service-num">02</div>
+          <h3>Economics Analysis</h3>
+          <p class="service-subtitle">Quantitative Economic Modelling</p>
+          <p>Quantitative economic modelling for regions, countries, and institutions — CGE models and applied econometrics used to evaluate policy, test hypotheses, forecast, and inform decisions.</p>
+          <ul class="service-list">
+            <li>CGE modelling — tax reform, trade policy, fiscal &amp; sectoral scenarios</li>
+            <li>Applied econometrics — time-series, panel data, causal inference</li>
+            <li>Clients: ministries, regulators, central banks, multilaterals, research bodies</li>
+          </ul>
+          <div class="tools-strip">
+            <span class="tool-badge">GAMS</span>
+            <span class="tool-badge">GAMSPy</span>
+            <span class="tool-badge">R</span>
+            <span class="tool-badge">Stata</span>
+          </div>
+        </div>
+
+        <!-- 03 Financial Education -->
+        <div class="service-card fade-up" style="transition-delay:0.1s">
+          <div class="service-num">03</div>
+          <h3>Financial Education</h3>
+          <p class="service-subtitle">Practitioner-Led Programmes</p>
+          <p>Building quantitative fluency in finance and economics professionals — from financial markets and derivatives to CGE modelling and applied econometrics. Taught from live advisory experience.</p>
+          <ul class="service-list">
+            <li>Financial markets, derivatives, risk management, mathematics &amp; statistics</li>
+            <li>CGE modelling training (GAMS, GAMSPy) for economists &amp; analysts</li>
+            <li>Applied econometrics (R, Stata) for analysts &amp; graduate researchers</li>
+            <li>Individuals, working professionals &amp; institutional teams</li>
+          </ul>
+        </div>
+
+        <!-- 04 Fintech Product Development -->
+        <div class="service-card fade-up" style="transition-delay:0.2s">
+          <div class="service-num">04</div>
+          <h3>Fintech Products</h3>
+          <p class="service-subtitle">Tools &amp; Platforms</p>
+          <p>Analytical tools and scalable platforms built from models we already trust in live use — not from feature lists. Designed as the firm's long-term primary revenue engine.</p>
+          <ul class="service-list">
+            <li>Calculators, optimisers, risk engines &amp; modelling utilities</li>
+            <li>Scalable platforms extending our frameworks to wider audiences</li>
+            <li>Every product originates in a live, validated model</li>
+          </ul>
+          <div class="tools-strip">
+            <span class="tool-badge">Python</span>
+            <span class="tool-badge">R</span>
+            <span class="tool-badge">Excel</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       METHODS & TOOLS
+  ══════════════════════════════════════════════════ -->
+  <section id="methods">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">How We Build</span>
+        <span class="rule-gold"></span>
+        <h2>Methods &amp; Tools</h2>
+        <p style="font-size:var(--text-md); color:var(--ink-soft); max-width:680px; margin-top:0.5rem; margin-bottom:0">
+          Our methods are chosen for fitness, not fashion. Each division draws on a defined toolkit of
+          internationally established platforms — applied with the precision the work demands.
+        </p>
+      </div>
+      <div class="methods-grid">
+        <div class="method-block fade-up">
+          <h3>Quantitative Finance</h3>
+          <p>Portfolio optimisation, derivatives pricing, risk modelling, factor analysis, and stress
+          testing — implemented with results validated against established benchmarks.</p>
+          <div class="method-tools">
+            <span class="method-tool">Python</span>
+            <span class="method-tool">R</span>
+            <span class="method-tool">Excel</span>
+          </div>
+        </div>
+        <div class="method-block fade-up" style="transition-delay:0.1s">
+          <h3>CGE Modelling</h3>
+          <p>Computable General Equilibrium models for regional, national, and sectoral analysis.
+          Used to evaluate tax reform, trade policy, fiscal shocks, infrastructure investment, and
+          structural transformation scenarios. GAMSPy brings the same modelling power into a
+          modern Python workflow, enabling integration with data pipelines and reproducible
+          research practice.</p>
+          <div class="method-tools">
+            <span class="method-tool">GAMS</span>
+            <span class="method-tool">GAMSPy</span>
+            <span class="method-tool">Python</span>
+          </div>
+        </div>
+        <div class="method-block fade-up">
+          <h3>Econometric Modelling</h3>
+          <p>Applied econometrics for hypothesis testing, forecasting, and causal inference.
+          Time-series methods, panel data techniques, instrumental variables,
+          difference-in-differences, regression discontinuity, and modern
+          machine-learning-augmented inference — selected to fit the question, not to display
+          the toolkit.</p>
+          <div class="method-tools">
+            <span class="method-tool">R</span>
+            <span class="method-tool">Stata</span>
+          </div>
+        </div>
+        <div class="method-block fade-up" style="transition-delay:0.1s">
+          <h3>Scale of Engagement</h3>
+          <p>We work at every level at which quantitative analysis is useful — from the institution
+          to the nation to the region. Our clients include ministries, regulators, central banks,
+          multilaterals, development partners, research institutes, and private institutions
+          requiring defensible, model-based analysis.</p>
+        </div>
+      </div>
+
+      <div class="scale-strip fade-up" style="transition-delay:0.15s">
+        <div class="scale-item">
+          <div class="scale-icon">◈</div>
+          <h4>Regions</h4>
+          <p>Multi-country analysis for SADC, sub-Saharan Africa, and regional economic communities</p>
+        </div>
+        <div class="scale-item">
+          <div class="scale-icon">◉</div>
+          <h4>Countries</h4>
+          <p>National policy analysis, fiscal scenario modelling, and macroeconomic forecasting</p>
+        </div>
+        <div class="scale-item">
+          <div class="scale-icon">◎</div>
+          <h4>Institutions</h4>
+          <p>Bespoke analysis for ministries, regulators, central banks, multilaterals &amp; research bodies</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       APPROACH (4 Principles)
+  ══════════════════════════════════════════════════ -->
+  <section id="approach">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">How We Think</span>
+        <span class="rule-gold"></span>
+        <h2>Four principles guide every<br/>engagement, analysis, and product.</h2>
+      </div>
+      <div class="approach-list">
+
+        <div class="principle fade-up">
+          <div class="principle-num">i.</div>
+          <div class="principle-content">
+            <h3>Evidence over intuition</h3>
+            <p>Recommendations are derived from data, tested models, and documented assumptions — never from narrative alone. Every finding should be traceable to its inputs and reproducible by any qualified reviewer.</p>
+          </div>
+        </div>
+
+        <div class="principle fade-up">
+          <div class="principle-num">ii.</div>
+          <div class="principle-content">
+            <h3>Risk first, return second</h3>
+            <p>We size and stress every strategy and forecast against its uncertainty before we ask what it can earn or imply. Risk-adjusted and confidence-bounded results are the metrics that matter — not raw return or point estimates.</p>
+          </div>
+        </div>
+
+        <div class="principle fade-up">
+          <div class="principle-num">iii.</div>
+          <div class="principle-content">
+            <h3>Transparent frameworks</h3>
+            <p>Clients see the logic, not just the conclusion. Every model and framework we deliver is auditable and reproducible. Opacity erodes trust — in financial advice and in economic analysis alike.</p>
+          </div>
+        </div>
+
+        <div class="principle fade-up">
+          <div class="principle-num">iv.</div>
+          <div class="principle-content">
+            <h3>Rigour that travels</h3>
+            <p>We hold ourselves to international quantitative standards, so the methods we use in Gaborone would stand up in any market or ministry — London, Singapore, Washington, or Brussels.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       WHY SCRIBAL
+  ══════════════════════════════════════════════════ -->
+  <section id="why">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">Why Scribal</span>
+        <span class="rule-gold"></span>
+        <h2>What Sets Us Apart</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card fade-up">
+          <div class="why-icon">∑</div>
+          <h4>Quant at the core</h4>
+          <p>Mathematical and statistical method is not an add-on — it is the foundation of everything we deliver.</p>
+        </div>
+        <div class="why-card fade-up" style="transition-delay:0.08s">
+          <div class="why-icon">⊕</div>
+          <h4>Finance &amp; economics</h4>
+          <p>A rare combined competence: quantitative finance and applied economic modelling under one roof.</p>
+        </div>
+        <div class="why-card fade-up" style="transition-delay:0.16s">
+          <div class="why-icon">◈</div>
+          <h4>Live, not theoretical</h4>
+          <p>Advice and analysis are delivered in real client contexts, with accountability for outcomes — not left in a report.</p>
+        </div>
+        <div class="why-card fade-up" style="transition-delay:0.08s">
+          <div class="why-icon">∞</div>
+          <h4>Integrated divisions</h4>
+          <p>Research, advisory, analysis, education, and product reinforce one another in a single feedback loop.</p>
+        </div>
+        <div class="why-card fade-up" style="transition-delay:0.16s">
+          <div class="why-icon">≡</div>
+          <h4>International standard</h4>
+          <p>Practice benchmarked to global norms in quantitative finance and economic modelling, delivered with local insight.</p>
+        </div>
+        <div class="why-card fade-up" style="transition-delay:0.24s">
+          <div class="why-icon">◎</div>
+          <h4>Transparent by design</h4>
+          <p>Clients and learners see the reasoning, not just the result. Every conclusion is auditable and reproducible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       LEADERSHIP
+  ══════════════════════════════════════════════════ -->
+  <section id="leadership">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">Leadership</span>
+        <span class="rule-gold"></span>
+        <h2>Founded on expertise.<br/>Driven by conviction.</h2>
+      </div>
+      <div class="leader-card fade-up">
+        <div class="leader-left">
+          <!--
+            PROFILE PHOTO PLACEHOLDER
+            Replace the .leader-avatar div contents with:
+            <img src="assets/opelo-photo.jpg" alt="Opelo Mbakile"
+                 style="width:100%;height:100%;object-fit:cover;">
+            Artwork spec: 340 × 340 px minimum (displayed at 170×170 px),
+            square crop, professional headshot, JPEG or WebP
+          -->
+          <div class="leader-avatar">
+            <span class="initials">OM</span>
+          </div>
+          <div class="leader-name">Opelo Mbakile</div>
+          <div class="leader-title">Founder &amp; Chief Investment Officer</div>
+          <div class="credentials">
+            <div class="credential">PhD Candidate — Pure Mathematics</div>
+            <div class="credential">MSc, Pure Mathematics (Distinction)</div>
+            <div class="credential">CQF — Passed with Distinction</div>
+            <div class="credential">EcoMod GAMS Certificate — CGE Modelling</div>
+            <div class="credential">FRM Candidate (GARP)</div>
+            <div class="credential">FMVA Candidate (CFI)</div>
+          </div>
+        </div>
+        <div class="leader-bio">
+          <p>
+            A mathematician and quantitative practitioner, Opelo founded Scribal Institute to bring
+            institutional-grade quantitative method to the regional market. The firm's frameworks,
+            advisory practice, analytical work, and curriculum reflect a background spanning pure
+            mathematics, quantitative finance, and applied economic modelling.
+          </p>
+          <p>
+            Scribal Institute was built on the conviction that decisions in finance and economic
+            policy improve when grounded in explicit, reproducible method — and that this level of
+            rigour is both achievable and necessary in the Botswana market and the wider region.
+          </p>
+          <p>
+            Every division of the firm reflects Opelo's dual competence: the financial services and
+            fintech work draws on quantitative finance training at the highest level (CQF with
+            Distinction, FRM), while the economics analysis division applies the same rigour to
+            macro policy questions through CGE modelling (EcoMod GAMS) and applied econometrics.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="section-header fade-up">
+        <span class="label">Get in Touch</span>
+        <span class="rule-gold"></span>
+        <h2>Engage With Us</h2>
+      </div>
+      <div class="contact-grid">
+
+        <div class="contact-info fade-up">
+          <p>We welcome conversations with prospective clients, institutional partners, government
+          and multilateral counterparties, learners, and funders. Whether you are seeking advisory,
+          economic analysis, training, or a development partnership, we would be glad to hear from you.</p>
+
+          <div class="contact-item">
+            <div class="contact-icon">◎</div>
+            <div class="contact-detail">
+              <strong>Office</strong>Gaborone, Botswana
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉</div>
+            <div class="contact-detail">
+              <strong>Email</strong>
+              <a href="mailto:Mbakileop@gmail.com">Mbakileop@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">◉</div>
+            <div class="contact-detail">
+              <strong>Telephone</strong>
+              <a href="tel:+26774758107">+267 74 758 107</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">⊕</div>
+            <div class="contact-detail">
+              <strong>Website</strong>
+              <a href="http://www.scribal.co.bw">www.scribal.co.bw</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up" style="transition-delay:0.15s">
+          <form class="contact-form" onsubmit="handleSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="enquiry">Area of Interest</label>
+              <select id="enquiry" name="enquiry">
+                <option value="">Select an area…</option>
+                <option value="advisory">Financial Advisory</option>
+                <option value="economics">Economics Analysis</option>
+                <option value="education">Financial Education</option>
+                <option value="fintech">Fintech Products</option>
+                <option value="partnership">Partnership / Institutional</option>
+                <option value="government">Government / Multilateral</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your needs…"></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="align-self:flex-start">Send Enquiry</button>
+            <div id="form-msg"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <!--
+          FOOTER LOGO PLACEHOLDER
+          Replace with: <img src="assets/logo-mark-white.png" alt="" width="40" height="40" class="logo-footer">
+          Artwork spec: 80 × 80 px PNG @ 2× (displayed at 40×40 px), white/gold on transparent background
+        -->
+        <div class="logo-placeholder logo-footer">LOGO<br/>40×40</div>
+        <div class="footer-brand">
+          <div class="wordmark">Scribal Institute</div>
+          <div class="sub">Quantitative Finance · Economics · Education · Gaborone</div>
+        </div>
+      </div>
+      <div class="footer-copy">
+        &copy; 2026 Scribal Institute (Pty) Ltd &nbsp;·&nbsp; All rights reserved
+        <span class="footer-reg">Regulatory status pending — NBFIRA alignment in progress</span>
+      </div>
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="#services">Divisions</a>
+        <a href="#methods">Methods</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════════════════ -->
+  <script>
+    // Mobile nav toggle
+    function toggleMenu() {
+      const nav = document.getElementById('mobileNav');
+      const ham = document.getElementById('hamburger');
+      const open = nav.classList.toggle('open');
+      ham.classList.toggle('active', open);
+      ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    document.addEventListener('click', function(e) {
+      const nav = document.getElementById('mobileNav');
+      const ham = document.getElementById('hamburger');
+      if (nav.classList.contains('open') && !nav.contains(e.target) && !ham.contains(e.target)) {
+        nav.classList.remove('open');
+        ham.classList.remove('active');
+      }
+    });
+
+    // Scroll fade-in
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible'));
+      }, 120);
+    });
+
+    // Nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').style.boxShadow =
+        window.scrollY > 20 ? '0 4px 32px rgba(0,0,0,0.5)' : 'none';
+    }, { passive: true });
+
+    // Contact form
+    function handleSubmit(e) {
+      e.preventDefault();
+      const msg = document.getElementById('form-msg');
+      msg.style.display = 'block';
+      msg.textContent = 'Thank you — your enquiry has been received. We will be in touch shortly.';
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>
