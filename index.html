@@ -219,15 +219,9 @@
       <div class="flex items-center justify-between h-20">
         
         <!-- Logo -->
-        <div class="flex items-center gap-x-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#c9a84c] to-[#e0bf6a] flex items-center justify-center shadow-inner">
-            <span class="text-[#0d1b2a] font-bold text-2xl tracking-[-1.5px] font-display">S</span>
-          </div>
-          <div>
-            <div class="font-display text-2xl font-semibold tracking-[-0.04em] text-[#0d1b2a] dark:text-white">Scribal</div>
-            <div class="text-[10px] text-[#c9a84c] font-medium tracking-[1.5px] -mt-1">INSTITUTE</div>
-          </div>
-        </div>
+        <a href="#hero" class="flex items-center">
+          <img src="images/logo.png" alt="Scribal Institute" class="h-10 w-auto">
+        </a>
 
         <!-- Desktop Navigation -->
         <div class="hidden lg:flex items-center gap-x-9 text-sm">
@@ -298,8 +292,8 @@
   <!-- HERO -->
   <section id="hero" class="relative min-h-[100dvh] flex items-center pt-20 bg-[#0d1b2a] dark:bg-black overflow-hidden">
     <!-- Background Image + Overlay -->
-    <div class="absolute inset-0 bg-[url('https://picsum.photos/id/1015/1920/1080')] bg-cover bg-center opacity-40 mix-blend-luminosity"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0d1b2a]/90 via-[#0d1b2a]/80 to-[#0d1b2a]"></div>
+    <div class="absolute inset-0 bg-[url('images/hero-office.webp')] bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0d1b2a]/85 via-[#0d1b2a]/75 to-[#0d1b2a]"></div>
     
     <!-- Subtle grid overlay -->
     <div class="absolute inset-0 finance-grid opacity-30"></div>
@@ -472,6 +466,12 @@
           <li class="flex gap-x-3"><span class="text-[#c9a84c] mt-1">→</span> Applied econometrics (R, Stata) for analysts &amp; researchers</li>
           <li class="flex gap-x-3"><span class="text-[#c9a84c] mt-1">→</span> Individuals, working professionals &amp; institutional teams</li>
         </ul>
+
+        <!-- Practitioner-led teaching visual -->
+        <div class="mt-8 -mx-2">
+          <img src="images/whiteboard-teaching.webp" alt="Practitioner-led mathematical modelling training at Scribal Institute" class="rounded-2xl shadow-lg border border-[#e2e8f0] dark:border-white/10 w-full">
+          <p class="text-center text-xs text-[#64748b] dark:text-[#94a3b8] mt-2 tracking-wider">PRACTITIONER-LED TRAINING IN ACTION</p>
+        </div>
       </div>
 
       <!-- Card 4: Fintech Products -->
@@ -496,6 +496,12 @@
           <span class="tool-pill">Python</span>
           <span class="tool-pill">R</span>
           <span class="tool-pill">Excel / VBA</span>
+        </div>
+
+        <!-- Platform Preview -->
+        <div class="mt-8 -mx-2">
+          <img src="images/dashboard-analytics.webp" alt="Scribal Analytics live dashboard showing quantitative models, risk metrics and real-time data" class="rounded-2xl shadow-lg border border-[#e2e8f0] dark:border-white/10 w-full">
+          <p class="text-center text-xs text-[#64748b] dark:text-[#94a3b8] mt-2 tracking-wider">LIVE ANALYTICS PLATFORM PREVIEW</p>
         </div>
       </div>
     </div>
@@ -597,6 +603,11 @@
           <h3 class="font-semibold text-2xl tracking-tight">Transparent frameworks</h3>
           <p class="mt-3 text-[#475569] dark:text-[#94a3b8]">Clients see the logic, not just the conclusion. Every model and framework we deliver is auditable and reproducible. Opacity erodes trust.</p>
         </div>
+      </div>
+
+      <!-- Visual illustration for Transparent Frameworks -->
+      <div class="mt-2 mb-4 px-8 lg:px-10">
+        <img src="images/transparent-framework.webp" alt="Collaborative work on transparent quantitative frameworks at Scribal Institute" class="rounded-3xl shadow-xl border border-[#e2e8f0] dark:border-white/10 w-full max-w-4xl mx-auto">
       </div>
       
       <div class="grid md:grid-cols-12 gap-x-8 bg-white dark:bg-[#0f172a] px-8 lg:px-10 py-9 items-start">
@@ -766,12 +777,12 @@
             REAL EMAIL FORM SETUP (Formspree)
             1. Go to https://formspree.io → Sign up (free)
             2. Create a new form → Copy your endpoint (looks like https://formspree.io/f/abc123xyz)
-            3. Replace "https://formspree.io/f/mbdelljl" below with your endpoint
+            3. Replace "REPLACE_WITH_YOUR_FORMSPREE_ENDPOINT" below with your endpoint
             4. In Formspree dashboard, set recipient email to: nchidzi.alfa.tafa@gmail.com
             5. (Optional) Add your GitHub Pages domain in Formspree settings for spam protection
           -->
           <form id="contact-form" 
-                action="https://formspree.io/f/https://formspree.io/f/mbdelljl" 
+                action="https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ENDPOINT" 
                 method="POST"
                 class="space-y-6">
             
@@ -830,9 +841,7 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-y-8 text-sm">
         
         <div class="flex items-center gap-x-4">
-          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#c9a84c] to-[#e0bf6a] flex items-center justify-center">
-            <span class="text-[#0d1b2a] font-bold text-xl tracking-[-1px]">S</span>
-          </div>
+          <img src="images/logo.png" alt="Scribal Institute" class="h-9 w-auto">
           <div>
             <div class="font-semibold tracking-tight">Scribal Institute (Pty) Ltd</div>
             <div class="text-xs text-[#64748b]">Quantitative Finance · Economics · Education</div>
